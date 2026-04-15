@@ -13,15 +13,16 @@ router = APIRouter(prefix="/query", tags=["Query"])
 
 
 @router.post("", response_model=QueryResponse)
-async def query_content(request: QueryRequest) -> QueryResponse:
+def query_content(request: QueryRequest) -> QueryResponse:
     """Ask a natural-language question about crawled website content.
 
     Optionally filter to a specific website by providing ``website_url``.
     """
     logger.info("Query received: %s", request.question[:100])
+    website_url = request.website_url.rstrip("/") if request.website_url else None
     response = query_service.query(
         question=request.question,
-        website_url=request.website_url,
+        website_url=website_url,
         top_k=request.top_k,
     )
     return response

@@ -151,6 +151,13 @@ class CrawlerService:
             html = driver.page_source
             soup = BeautifulSoup(html, "html.parser")
 
+            # Extract links before removing non-content elements
+            links: list[str] = []
+            for anchor in soup.find_all("a", href=True):
+                href = anchor["href"]
+                absolute = urljoin(url, href)
+                links.append(self._normalize_url(absolute))
+
             # Remove non-content elements
             for tag in soup(["script", "style", "nav", "footer", "header", "noscript"]):
                 tag.decompose()
@@ -159,13 +166,6 @@ class CrawlerService:
                 soup.title.string.strip() if soup.title and soup.title.string else url
             )
             text = self._clean_text(soup.get_text(separator="\n"))
-
-            # Extract links
-            links: list[str] = []
-            for anchor in soup.find_all("a", href=True):
-                href = anchor["href"]
-                absolute = urljoin(url, href)
-                links.append(self._normalize_url(absolute))
 
             if not text.strip():
                 logger.debug("Skipping empty page: %s", url)
