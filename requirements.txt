@@ -1,0 +1,24 @@
+# Web Crawling Q&A Application
+# ──────────────────────────────
+
+# Web Framework
+fastapi>=0.115.0
+uvicorn[standard]>=0.30.0
+pydantic>=2.0.0
+pydantic-settings>=2.0.0
+
+# Web Crawling
+selenium>=4.20.0
+beautifulsoup4>=4.12.0
+
+# Vector Database
+chromadb>=0.5.0
+
+# LlamaIndex Core
+llama-index-core>=0.11.0
+llama-index-embeddings-openai>=0.2.0
+llama-index-llms-openai>=0.2.0
+llama-index-vector-stores-chroma>=0.2.0
+
+# Utilities
+python-dotenv>=1.0.0
